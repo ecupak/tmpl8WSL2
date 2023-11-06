@@ -58,7 +58,7 @@ using LONG = long;
 #include <linux/input.h>
 #include <linux/input-event-codes.h>
 
-//#ifdef USE_NEON_SIMD
+#ifdef USE_NEON_SIMD
 //
 //#include <arm_neon.h>
 //
@@ -83,7 +83,7 @@ using LONG = long;
 //	return vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #2
 //}
 //
-//#endif
+#endif
 
 using namespace std;
 

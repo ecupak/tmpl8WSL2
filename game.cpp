@@ -30,5 +30,6 @@ void Game::Tick(float deltaTime)
 	screen->Clear(0);
 	screen->Print("hello world", 2, 2, 0xffffff);
 	test.CopyTo(screen, xpos, ypos);
-	screen->pixels[mousePos.x + mousePos.y * screen->width] = 0xffffffff;
+	//screen->pixels[mousePos.x + mousePos.y * screen->width] = 0xffffffff;
+	//printf("hello world'\n");
 }
