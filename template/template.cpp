@@ -363,12 +363,12 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
 		game->Tick(0 /* no timing yet */);
-		renderTarget->CopyFrom(&screen);
+		/*renderTarget->CopyFrom(&screen);
 		shader->Bind();
-		shader->SetInputTexture(0, "c", renderTarget);
-		DrawQuad();
-		shader->Unbind();
-		glFlush();
+		shader->SetInputTexture(0, "c", renderTarget);*/
+		//DrawQuad();
+		/*shader->Unbind();
+		glFlush();*/
 		eglSwapBuffers(eglDisplay, eglSurface);
 	}
 }
