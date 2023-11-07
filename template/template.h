@@ -54,9 +54,8 @@ using LONG = long;
 #include <string.h>
 #include <fstream>
 #include <pthread.h>
+#include <X11/Xutil.h>
 
-#include <linux/input.h>
-#include <linux/input-event-codes.h>
 
 #ifdef USE_NEON_SIMD
 //

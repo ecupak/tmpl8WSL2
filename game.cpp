@@ -1,5 +1,4 @@
 #include "template.h"
-
 Surface test("assets/spec.jpg");
 
 int xpos = 50, ypos = 50;
@@ -17,19 +16,22 @@ void Game::Init()
 // -----------------------------------------------------------
 void Game::Tick(float deltaTime)
 {
-	if (keystate[KEY_ESC]) exit(0);
-	if (keystate[KEY_LEFT])
+	//add the include
+	if (keystate[XK_Escape]) exit(0);
+	if (keystate[XK_Left])
 		xpos--;
 
-	if (keystate[KEY_RIGHT])
+	if (keystate[XK_Right])
 		xpos++;
-	if (keystate[KEY_UP])
+	if (keystate[XK_Up])
 		ypos--;
-	if (keystate[KEY_DOWN])
+	if (keystate[XK_Down])
 		ypos++;
 	screen->Clear(0);
 	screen->Print("hello world", 2, 2, 0xffffff);
 	test.CopyTo(screen, xpos, ypos);
-	//screen->pixels[mousePos.x + mousePos.y * screen->width] = 0xffffffff;
+	if (mousePos.x > 0 && mousePos.y > 0 &&
+		mousePos.x < screen->width && mousePos.y < screen->height)
+		screen->pixels[mousePos.x + mousePos.y * screen->width] = 0xffffffff;
 	//printf("hello world'\n");
 }

@@ -5,6 +5,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "template.h"
 
+#include <X11/Xlib.h>
+#include <X11/Xlibint.h>
 using namespace Tmpl8;
 
 // Enable usage of dedicated GPUs in notebooks
@@ -113,12 +115,6 @@ static EGLSurface eglSurface;
 static int* ks = 0;
 static int device = -1;
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xlibint.h>
-#include <X11/keysym.h>
-//#include <X11/extensions/XInput2.h>
-#include <stdio.h>
 
 void* InputHandlerThread(void* x)
 {
@@ -173,69 +169,73 @@ void* InputHandlerThread(void* x)
 	//			}
 	//		}
 	//	}
-	XGrabPointer(x11Display, x11Window, false,
-	             ButtonPressMask | ButtonReleaseMask, GrabModeAsync, GrabModeAsync, x11Window, None, CurrentTime);
+	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask);
 	XEvent event;
 	KeySym key;
-	char keybuf[32];
-	int keysym, n;
+	char keybuf[64];
 
-	while (1)
+	while (true)
 	{
+		//get event
 		XNextEvent(x11Display, &event);
-
+		int n = XLookupString(&event.xkey, keybuf, sizeof(keybuf), &key, nullptr);
 		if (event.type == KeyPress)
 		{
-			n = XLookupString(&event.xkey, keybuf, sizeof(keybuf), &key, NULL);
-			if (n > 0)
-			{
-				keybuf[n] = 0;
-				printf("Key pressed: %s\n", keybuf);
-
-				if (key == XK_Escape)
-				{
-					printf("Escape key pressed\n");
-				}
-			}
-			else
-			{
-				if (key == XK_Left)
-				{
-					printf("Left arrow key pressed\n");
-				}
-				else if (key == XK_Right)
-				{
-					printf("Right arrow key pressed\n");
-				}
-				else if (key == XK_Up)
-				{
-					printf("Up arrow key pressed\n");
-				}
-				else if (key == XK_Down)
-				{
-					printf("Down arrow key pressed\n");
-				}
-			}
+			ks[key] = 1;
 		}
-		if (event.type == ButtonPress)
+		else if (event.type == KeyRelease)
 		{
-			if (event.xbutton.button == Button1)
-			{
-				printf("Left mouse button pressed\n");
-			}
-			else if (event.xbutton.button == Button2)
-			{
-				printf("Middle mouse button pressed\n");
-			}
-			else if (event.xbutton.button == Button3)
-			{
-				printf("Right mouse button pressed\n");
-			}
+			ks[key] = 0;
 		}
-	}
-	XUngrabPointer(x11Display, CurrentTime);
 
-	return nullptr;
+		//	//letters
+		//	if (n > 0)
+		//	{
+		//		keybuf[n] = 0;
+
+		//		if (key == XK_Escape)
+		//		{
+		//			printf("Escape key pressed\n");
+		//		}
+		//		else
+		//			printf("Key pressed: %s\n", keybuf);
+		//	} //arrow keys
+		//	else
+		//	{
+		//		if (key == XK_Left)
+		//		{
+		//			printf("Left arrow key pressed\n");
+		//		}
+		//		else if (key == XK_Right)
+		//		{
+		//			printf("Right arrow key pressed\n");
+		//		}
+		//		else if (key == XK_Up)
+		//		{
+		//			printf("Up arrow key pressed\n");
+		//		}
+		//		else if (key == XK_Down)
+		//		{
+		//			printf("Down arrow key pressed\n");
+		//		}
+		//	}
+		//}
+		//else if (event.type == ButtonPress)
+		//{
+		//	if (event.xbutton.button == Button1)
+		//	{
+		//		//printf("Left mouse button pressed\n");
+		//	}
+		//	else if (event.xbutton.button == Button2)
+		//	{
+		//		//printf("Middle mouse button pressed\n");
+		//	}
+		//	else if (event.xbutton.button == Button3)
+		//	{
+		//		//printf("Right mouse button pressed\n");
+		//	}
+		//}
+	}
 }
 
 void GetMousePos(int& childx, int& childy)
