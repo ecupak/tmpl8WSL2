@@ -288,10 +288,10 @@
       <OmitFramePointers>false</OmitFramePointers>
       <RelaxIEEE>true</RelaxIEEE>
       <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
+      <CLanguageStandard>c11</CLanguageStandard>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -322,6 +322,7 @@
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
+      <DebugInformationFormat>FullDebug</DebugInformationFormat>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>

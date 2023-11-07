@@ -17,7 +17,8 @@ void Game::Init()
 void Game::Tick(float deltaTime)
 {
 	//add the include
-	if (keystate[XK_Escape]) exit(0);
+	if (keystate[XK_Escape])
+		exit(0);
 	if (keystate[XK_Left])
 		xpos--;
 

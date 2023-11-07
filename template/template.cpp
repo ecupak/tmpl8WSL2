@@ -179,6 +179,7 @@ void* InputHandlerThread(void* x)
 		//get event
 		XNextEvent(x11Display, &event);
 		int n = XLookupString(&event.xkey, keybuf, sizeof(keybuf), &key, nullptr);
+		n;
 		if (event.type == KeyPress)
 		{
 			ks[key] = 1;
