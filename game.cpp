@@ -1,6 +1,5 @@
 #include "template.h"
 #include "Triangle.h"
-Triangle triangle;
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
@@ -12,6 +11,8 @@ void Game::Init()
 // -----------------------------------------------------------
 // Main application tick function
 // -----------------------------------------------------------
+
+
 void Game::Tick(float deltaTime)
 {
 	if (keystate[XK_Escape])

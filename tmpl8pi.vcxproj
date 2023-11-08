@@ -338,6 +338,7 @@
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
