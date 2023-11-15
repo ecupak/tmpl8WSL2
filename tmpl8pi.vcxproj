@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WSL2_1_0</PlatformToolset>
+    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -135,7 +135,7 @@
     <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
-    <WSLPath>Debian</WSLPath>
+    <WSLPath>default</WSLPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -273,6 +273,7 @@
       <LinkTimeOptimization>false</LinkTimeOptimization>
       <RelaxIEEE>false</RelaxIEEE>
       <ExceptionHandling>Enabled</ExceptionHandling>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
     <Link />

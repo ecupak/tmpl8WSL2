@@ -3,7 +3,7 @@ class BasicFragmentShader
 {
 public:
 	BasicFragmentShader();
-	inline static const char* fragmentShaderSource = "#version 300 es\n"
+	inline static const char* fragmentShaderSource = "#version 310 es\n"
 		"out highp vec4 FragColor;\n"
 		"void main()\n"
 		"{\n"

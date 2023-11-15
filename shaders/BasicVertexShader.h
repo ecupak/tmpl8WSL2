@@ -3,7 +3,7 @@ class BasicVertexShader
 {
 public:
 	BasicVertexShader();
-	inline static const char* vertexShaderSource = "#version 300 es\n"
+	inline static const char* vertexShaderSource = "#version 310 es\n"
 		"layout (location = 0) in vec3 aPos;\n"
 		"void main()\n"
 		"{\n"

@@ -63,7 +63,7 @@ void Triangle::Init()
 
 	unsigned int fragmentShader2;
 	fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
-	const char* fragmentShaderSource = "#version 300 es\n"
+	const char* fragmentShaderSource = "#version 310 es\n"
 		"out highp vec4 FragColor;\n"
 		"void main()\n"
 		"{\n"

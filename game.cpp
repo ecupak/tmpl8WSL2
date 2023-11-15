@@ -17,5 +17,7 @@ void Game::Tick(float deltaTime)
 {
 	if (keystate[XK_Escape])
 		exit(0);
+
+
 	triangle.Draw();
 }
