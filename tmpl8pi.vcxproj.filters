@@ -46,7 +46,6 @@
     <ClInclude Include="template\sprite.h">
       <Filter>template</Filter>
     </ClInclude>
-    <ClInclude Include="template\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
