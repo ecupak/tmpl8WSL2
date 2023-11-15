@@ -143,6 +143,7 @@
     <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
+    <WSLPath>Debian</WSLPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">
     <ValidateArchitecture>false</ValidateArchitecture>
@@ -222,8 +223,6 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
-    <ClCompile Include="shaders\BasicVertexShader.h" />
-    <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="template\surface.cpp" />
@@ -236,11 +235,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
-    <ClInclude Include="shaders\BasicFragmentShader.h" />
-    <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
-    <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="template\surface.h" />
     <ClCompile Include="template\template.h">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">-x %(AdditionalOptions)</AdditionalOptions>
@@ -273,8 +269,8 @@
       <LinkTimeOptimization>false</LinkTimeOptimization>
       <RelaxIEEE>false</RelaxIEEE>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link />
     <Link />
     <Link />
   </ItemDefinitionGroup>
@@ -297,7 +293,6 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
       <CLanguageStandard>c11</CLanguageStandard>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -329,7 +324,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
@@ -338,8 +333,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
@@ -348,7 +343,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|x64'">

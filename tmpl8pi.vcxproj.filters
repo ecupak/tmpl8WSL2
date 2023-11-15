@@ -31,8 +31,6 @@
     <ClCompile Include="template\template.h">
       <Filter>template</Filter>
     </ClCompile>
-    <ClCompile Include="src\Triangle.cpp" />
-    <ClCompile Include="shaders\BasicVertexShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -48,9 +46,6 @@
     <ClInclude Include="template\sprite.h">
       <Filter>template</Filter>
     </ClInclude>
-    <ClInclude Include="template\stb_image.h" />
-    <ClInclude Include="src\Triangle.h" />
-    <ClInclude Include="shaders\BasicFragmentShader.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
