@@ -42,6 +42,7 @@ public:
 	void SetInputTexture(uint slot, const char* name, GLTexture* texture);
 	void SetInputMatrix(const char* name, const mat4& matrix);
 	void SetFloat(const char* name, const float v);
+	void SetFloat3(const char* name, float v1, float v2, float v3);
 	void SetInt(const char* name, const int v);
 	void SetUInt(const char* name, const uint v);
 	void Unbind();

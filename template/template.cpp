@@ -359,11 +359,12 @@ int main(int argc, char* argv[])
 	ks = game->keystate;
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
+	constexpr float FPS = 1.0f / 60;
 	while (1)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
-		game->Tick(0 /* no timing yet */);
+		game->Tick(FPS);
 
 		/*renderTarget->CopyFrom(&screen);
 		shader->Bind();
@@ -371,7 +372,7 @@ int main(int argc, char* argv[])
 		//DrawQuad();
 		/*shader->Unbind();*/
 
-		glFlush();
 		eglSwapBuffers(eglDisplay, eglSurface);
+		glFlush();
 	}
 }
