@@ -335,23 +335,24 @@ int main(int argc, char* argv[])
 {
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
-	GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
-#if WINBUILD
-	Shader* shader = new Shader(
-		"#version 330\nin vec4 p;\nin vec2 t;out vec2 u;void main(){u=t;gl_Position=p;}",
-		"#version 330\nuniform sampler2D c;in vec2 u;out vec4 f;void main(){f=sqrt(texture(c,u));}", true);
-#else
-	Shader* shader = new Shader(
-		"precision mediump float;attribute vec3 p;varying vec2 u;void main(){u=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,1);}",
-		"precision mediump float;varying vec2 u;uniform sampler2D c;void main(){gl_FragColor=texture2D(c,u).zyxw;}",
-		true);
-#endif
+	//GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
+	//#if WINBUILD
+	//		Shader* shader = new Shader(
+	//			"#version 330\nin vec4 p;\nin vec2 t;out vec2 u;void main(){u=t;gl_Position=p;}",
+	//			"#version 330\nuniform sampler2D c;in vec2 u;out vec4 f;void main(){f=sqrt(texture(c,u));}", true);
+	//#else
+	//	Shader* shader = new Shader(
+	//		"precision mediump float;attribute vec3 p;varying vec2 u;void main(){u=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,1);}",
+	//		"precision mediump float;varying vec2 u;uniform sampler2D c;void main(){gl_FragColor=texture2D(c,u).zyxw;}",
+	//		true);
+	//#endif
+
 	FixWorkingFolder();
 	Surface screen(SCRWIDTH, SCRHEIGHT);
 	screen.Clear(0);
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	game = new Game();
-	game->SetTarget(&screen);
+	//game->SetTarget(&screen);
 	game->Init();
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	eglSwapInterval(eglDisplay, 0);
@@ -363,12 +364,14 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
 		game->Tick(0 /* no timing yet */);
+
 		/*renderTarget->CopyFrom(&screen);
 		shader->Bind();
 		shader->SetInputTexture(0, "c", renderTarget);*/
 		//DrawQuad();
-		/*shader->Unbind();
-		glFlush();*/
+		/*shader->Unbind();*/
+
+		glFlush();
 		eglSwapBuffers(eglDisplay, eglSurface);
 	}
 }

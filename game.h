@@ -15,13 +15,13 @@ namespace Tmpl8
 			/* implement if you want to do something on exit */
 		}
 
-		void SetTarget(Surface* s)
+		/*void SetTarget(Surface* s)
 		{
 			screen = s;
-		}
+		}*/
 
 		// data members
-		Surface* screen;
+		//Surface* screen;
 		//TODO less big array just to store input
 		int keystate[66666];
 		int2 mousePos;
@@ -31,5 +31,6 @@ namespace Tmpl8
 			0.0f, 0.5f, 0.0f
 		};
 		Triangle triangle{};
+		Shader* simpleShader = nullptr;
 	};
 } // namespace Tmpl8

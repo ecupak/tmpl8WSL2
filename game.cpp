@@ -6,6 +6,10 @@
 void Game::Init()
 {
 	triangle.Init();
+
+	simpleShader = new Shader(
+		"shaders/BasicVertexShader.vert",
+		"shaders/BasicFragmentShader.frag");
 }
 
 // -----------------------------------------------------------
@@ -18,6 +22,7 @@ void Game::Tick(float deltaTime)
 	if (keystate[XK_Escape])
 		exit(0);
 
-
+	simpleShader->Bind();
 	triangle.Draw();
+	simpleShader->Unbind();
 }

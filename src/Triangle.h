@@ -5,23 +5,10 @@ struct Triangle
 	void Init();
 
 private:
-	float vertices[12] = {
-		0.5f, 0.5f, 0.0f, // top right
-		0.5f, -0.5f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, // bottom left
-		-0.5f, 0.5f, 0.0f // top left 
-	};
-	float vertices1Triangles[9] = {
-		-0.5f, 0.5f, 0.0f, // top right
-		0.0f, -0.5f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, // bottom left
-
-	};
-	float vertices2Triangles[9] = {
-
-		0.5f, 0.5f, 0.0f, // top left
-		0.2f, 0.5f, 0.0f, // top right
-		0.5f, -0.5f, 0.0f, // bottom right
+	float vertices[9] = {
+		0.0f, 0.5f, 0.0f, // top 
+		0.5f, -0.5f, 0.0f, //down right
+		-0.5f, -0.5f, 0.0f //down left
 	};
 	unsigned int indices[6] = {
 		// note that we start from 0!

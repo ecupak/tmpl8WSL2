@@ -222,7 +222,6 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
-    <ClCompile Include="shaders\BasicVertexShader.h" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
@@ -236,7 +235,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
-    <ClInclude Include="shaders\BasicFragmentShader.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
@@ -258,6 +256,8 @@
     <Image Include="assets\spec.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\BasicFragmentShader.frag" />
+    <None Include="shaders\BasicVertexShader.vert" />
     <None Include="shaders\compute.comp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
