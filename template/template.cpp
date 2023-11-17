@@ -7,6 +7,8 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xlibint.h>
+
+#include "game.h"
 using namespace Tmpl8;
 
 
@@ -77,7 +79,7 @@ void FatalError(const char* fmt, ...)
 	vsnprintf(t, sizeof(t), fmt, args);
 	va_end(args);
 	printf(t);
-	shouldExit = true;
+	exit(0);
 }
 
 void CheckEGL(EGLBoolean result, const char* file, const uint line)
@@ -362,7 +364,7 @@ int main(int argc, char* argv[])
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
 	constexpr float FPS = 1.0f / 60;
-	while (!shouldExit)
+	while (1)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
@@ -377,7 +379,4 @@ int main(int argc, char* argv[])
 		eglSwapBuffers(eglDisplay, eglSurface);
 		glFlush();
 	}
-
-
-	exit(0);
 }

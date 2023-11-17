@@ -64,11 +64,14 @@ namespace Tmpl8
 		void Line(float x1, float y1, float x2, float y2, uint c);
 		void Plot(int x, int y, uint c);
 		void LoadFromFile(const char* file);
+		void LoadRawData(const char* file);
+		void FreeRawData() const;
 		void CopyTo(Surface* dst, int x, int y);
 		void Box(int x1, int y1, int x2, int y2, uint color);
 		void Bar(int x1, int y1, int x2, int y2, uint color);
 		// attributes
 		uint* pixels = 0;
+		unsigned char* rawPixels = 0;
 		int width = 0, height = 0;
 		bool ownBuffer = false;
 		// static data for the hardcoded font

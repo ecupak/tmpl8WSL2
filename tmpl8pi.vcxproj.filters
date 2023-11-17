@@ -32,6 +32,8 @@
       <Filter>template</Filter>
     </ClCompile>
     <ClCompile Include="src\Triangle.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -48,6 +50,8 @@
       <Filter>template</Filter>
     </ClInclude>
     <ClInclude Include="src\Triangle.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -56,6 +60,8 @@
     <Image Include="assets\spec.jpg">
       <Filter>assets</Filter>
     </Image>
+    <Image Include="assets\wall.jpg" />
+    <Image Include="assets\awesomeface.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compute.comp">

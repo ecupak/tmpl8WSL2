@@ -20,7 +20,7 @@ Surface::Surface(int w, int h, uint* b) : pixels(b), width(w), height(h)
 
 Surface::Surface(int w, int h) : width(w), height(h)
 {
-	pixels = (uint*)MALLOC64(w * h * sizeof( uint ));
+	pixels = (uint*)MALLOC64(w * h * sizeof(uint));
 	ownBuffer = true; // needs to be deleted in destructor
 }
 
@@ -49,7 +49,7 @@ void Surface::LoadFromFile(const char* file)
 	if (!stbData) FatalError("could not load file %s.\n", file);
 	width = w;
 	height = h;
-	pixels = (uint*)MALLOC64(width * height * sizeof( uint ));
+	pixels = (uint*)MALLOC64(width * height * sizeof(uint));
 	if (n == 4) memcpy(pixels, stbData, w * h * 4);
 	else if (n == 3)
 	{
@@ -65,15 +65,30 @@ void Surface::LoadFromFile(const char* file)
 	stbi_image_free(stbData);
 }
 
+void Surface::LoadRawData(const char* file)
+{
+	int w, h, n;
+	rawPixels = stbi_load(file, &w, &h, &n, 0);
+	if (!rawPixels)
+		FatalError("could not load file %s.\n", file);
+	width = w;
+	height = h;
+}
+
+void Surface::FreeRawData() const
+{
+	stbi_image_free(rawPixels);
+}
+
 #else
 
-void Surface::LoadFromFile( const char* file )
+void Surface::LoadFromFile(const char* file)
 {
 	// use stb_image to load the image file
 	int n;
-	unsigned char* data = stbi_load( file, &width, &height, &n, 0 );
+	unsigned char* data = stbi_load(file, &width, &height, &n, 0);
 	if (!data) return; // load failed
-	pixels = (uint*)MALLOC64( width * height * sizeof( uint ) );
+	pixels = (uint*)MALLOC64(width * height * sizeof(uint));
 	ownBuffer = true; // needs to be deleted in destructor
 	const int s = width * height;
 	if (n == 1) /* greyscale */ for (int i = 0; i < s; i++)
@@ -86,7 +101,7 @@ void Surface::LoadFromFile( const char* file )
 		for (int i = 0; i < s; i++) pixels[i] = (data[i * n + 0] << 16) + (data[i * n + 1] << 8) + data[i * n + 2];
 	}
 	// free stb_image data
-	stbi_image_free( data );
+	stbi_image_free(data);
 }
 
 #endif

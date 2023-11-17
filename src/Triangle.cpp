@@ -1,5 +1,4 @@
 #include "Triangle.h"
-#include "template.h"
 
 
 unsigned int VAO;
@@ -8,15 +7,28 @@ unsigned int EBO;
 
 void Triangle::Draw()
 {
+	glActiveTexture(GL_TEXTURE0);
+
+	wall.Bind();
+
+	glActiveTexture(GL_TEXTURE1);
+
+	face.Bind();
+
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	/*glBindVertexArray(0);*/
+	face.Unbind();
+	wall.Unbind();
 }
 
 void Triangle::Init()
 {
+	//texture loading
+
+	wall.Init("assets/wall.jpg");
+	face.Init("assets/awesomeface.png", true);
 	//Vertex array object creation
 	//first triangle
 	glGenVertexArrays(1, &VAO);
@@ -30,18 +42,25 @@ void Triangle::Init()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	//Element buffer object
+	glGenBuffers(1, &EBO);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//saves to EBO or the current buffer binding
+	// position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-
-
-	////Element buffer object
-	//glGenBuffers(1, &EBO);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+	// color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	// texture coord attribute
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+	//after VAO is unbind
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

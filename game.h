@@ -30,7 +30,7 @@ namespace Tmpl8
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f, 0.0f
 		};
-		Triangle triangle{};
 		Shader* simpleShader = nullptr;
+		Triangle triangle;
 	};
 } // namespace Tmpl8

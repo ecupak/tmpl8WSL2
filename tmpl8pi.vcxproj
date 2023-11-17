@@ -222,6 +222,8 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
@@ -235,6 +237,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
@@ -252,8 +256,10 @@
     <ClInclude Include="template\tmpl8math.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\awesomeface.png" />
     <Image Include="assets\font.png" />
     <Image Include="assets\spec.jpg" />
+    <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\BasicFragmentShader.frag" />
