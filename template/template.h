@@ -137,6 +137,7 @@ void CheckProgram(GLuint id, const char* vshader, const char* fshader);
 void DrawQuad();
 void FixWorkingFolder();
 string TextFileRead(const char* _File);
+inline bool shouldExit = false;
 
 // timer
 struct Timer

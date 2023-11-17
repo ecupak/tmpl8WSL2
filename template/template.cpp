@@ -9,6 +9,7 @@
 #include <X11/Xlibint.h>
 using namespace Tmpl8;
 
+
 // Enable usage of dedicated GPUs in notebooks
 // Note: this does cause the linker to produce a .lib and .exp file;
 // see http://developer.download.nvidia.com/devzone/devcenter/gamegraphics/files/OptimusRenderingPolicies.pdf
@@ -24,6 +25,7 @@ extern "C"
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 } */
 #endif
+
 
 Game* game;
 
@@ -75,7 +77,7 @@ void FatalError(const char* fmt, ...)
 	vsnprintf(t, sizeof(t), fmt, args);
 	va_end(args);
 	printf(t);
-	exit(0);
+	shouldExit = true;
 }
 
 void CheckEGL(EGLBoolean result, const char* file, const uint line)
@@ -360,7 +362,7 @@ int main(int argc, char* argv[])
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
 	constexpr float FPS = 1.0f / 60;
-	while (1)
+	while (!shouldExit)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
@@ -375,4 +377,7 @@ int main(int argc, char* argv[])
 		eglSwapBuffers(eglDisplay, eglSurface);
 		glFlush();
 	}
+
+
+	exit(0);
 }
