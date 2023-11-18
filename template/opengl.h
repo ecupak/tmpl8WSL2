@@ -43,6 +43,7 @@ public:
 	void SetInputMatrix(const char* name, const mat4& matrix);
 	void SetFloat(const char* name, const float v);
 	void SetMat4x4(const char* name, mat4 v) const;
+	void SetMat4x4Trasnpose(const char* name, mat4 v) const;
 	void SetFloat3(const char* name, float v1, float v2, float v3);
 	void SetInt(const char* name, const int v);
 	void SetUInt(const char* name, const uint v);

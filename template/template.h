@@ -5,12 +5,16 @@
 // default screen resolution
 #define SCRWIDTH	640
 #define SCRHEIGHT	480
+#define  CENTER_X  SCRWIDTH/ 2.0f
+#define  CENTER_Y  SCRHEIGHT/ 2.0f
+
 
 // allow NEON code
 #define USE_NEON_SIMD	1
 
 // constants
 #define PI			3.14159265358979323846264f
+#define TO_RADIANS			PI/180.0f
 #define INVPI		0.31830988618379067153777f
 #define INV2PI		0.15915494309189533576888f
 #define TWOPI		6.28318530717958647692528f
@@ -56,35 +60,35 @@ using LONG = long;
 #include <pthread.h>
 #include <X11/Xutil.h>
 
-//define only if we run on the ARM platform
-#ifdef __arm__
-#ifdef USE_NEON_SIMD
-
-#include <arm_neon.h>
-
-inline float hormin(const float32x4_t v4)
-{
-	const float32x2_t minOfHalfs = vpmin_f32(vget_low_f32(v4), vget_high_f32(v4));
-	const float32x2_t minOfMinOfHalfs = vpmin_f32(minOfHalfs, minOfHalfs);
-	return vget_lane_f32(minOfMinOfHalfs, 0);
-}
-
-inline float hormax(const float32x4_t v4)
-{
-	const float32x2_t maxOfHalfs = vpmax_f32(vget_low_f32(v4), vget_high_f32(v4));
-	const float32x2_t maxOfMaxOfHalfs = vpmax_f32(maxOfHalfs, maxOfHalfs);
-	return vget_lane_f32(maxOfMaxOfHalfs, 0);
-}
-
-inline float32x4_t reciproc4(const float32x4_t v4)
-{
-	float32x4_t reci4 = vrecpeq_f32(v4); // just an approximation
-	reci4 = vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #1
-	return vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #2
-}
-
-#endif
-#endif
+////define only if we run on the ARM platform
+//#ifdef __arm__
+//#ifdef USE_NEON_SIMD
+//
+//#include <arm_neon.h>
+//
+//inline float hormin(const float32x4_t v4)
+//{
+//	const float32x2_t minOfHalfs = vpmin_f32(vget_low_f32(v4), vget_high_f32(v4));
+//	const float32x2_t minOfMinOfHalfs = vpmin_f32(minOfHalfs, minOfHalfs);
+//	return vget_lane_f32(minOfMinOfHalfs, 0);
+//}
+//
+//inline float hormax(const float32x4_t v4)
+//{
+//	const float32x2_t maxOfHalfs = vpmax_f32(vget_low_f32(v4), vget_high_f32(v4));
+//	const float32x2_t maxOfMaxOfHalfs = vpmax_f32(maxOfHalfs, maxOfHalfs);
+//	return vget_lane_f32(maxOfMaxOfHalfs, 0);
+//}
+//
+//inline float32x4_t reciproc4(const float32x4_t v4)
+//{
+//	float32x4_t reci4 = vrecpeq_f32(v4); // just an approximation
+//	reci4 = vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #1
+//	return vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #2
+//}
+//
+//#endif
+//#endif
 
 using namespace std;
 

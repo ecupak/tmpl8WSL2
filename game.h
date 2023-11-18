@@ -1,5 +1,8 @@
 #pragma once
+#include "Timer.h"
 #include "Triangle.h"
+
+class Camera;
 
 namespace Tmpl8
 {
@@ -8,6 +11,7 @@ namespace Tmpl8
 	public:
 		// game flow methods
 		void Init();
+		void HandleInput(float deltaTime);
 		void Tick(float deltaTime);
 
 		void Shutdown()
@@ -32,5 +36,7 @@ namespace Tmpl8
 		};
 		Shader* simpleShader = nullptr;
 		Triangle triangle;
+		Camera* camera = nullptr;
+		inline static Timer timer;
 	};
 } // namespace Tmpl8

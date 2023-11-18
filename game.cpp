@@ -1,6 +1,5 @@
 #include "game.h"
-
-#include "Timer.h"
+#include "Camera.h"
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -12,6 +11,9 @@ void Game::Init()
 		"shaders/BasicFragmentShader.frag");
 
 	simpleShader->Bind();
+	mat4 projection = mat4::Perspective(PI / 180 * 45, static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                                    0.1f, 100.0f);
+	simpleShader->SetMat4x4("projection", projection);
 
 	simpleShader->SetInt("wallTexture", 0); // or with shader class
 	simpleShader->SetInt("faceTexture", 1); // or with shader class
@@ -20,48 +22,76 @@ void Game::Init()
 
 
 	triangle.Init();
+	camera = new Camera();
+	camera->Init();
+	camera->RotateMouse(mousePos);
 }
 
 // -----------------------------------------------------------
 // Main application tick function
 // -----------------------------------------------------------
 
-float3 position = 0;
+
 float mixing = .2f;
+float3 cubePositions[] = {
+	float3(0.0f, 0.0f, 0.0f),
+	float3(2.0f, 5.0f, -15.0f),
+	float3(-1.5f, -2.2f, -2.5f),
+	float3(-3.8f, -2.0f, -12.3f),
+	float3(2.4f, -0.4f, -3.5f),
+	float3(-1.7f, 3.0f, -7.5f),
+	float3(1.3f, -2.0f, -2.5f),
+	float3(1.5f, 2.0f, -2.5f),
+	float3(1.5f, 0.2f, -1.5f),
+	float3(-1.3f, 1.0f, -1.5f)
+};
+float3 position;
+
+void Game::HandleInput(float deltaTime)
+{
+	if (keystate[XK_Escape])
+		exit(0);
+
+
+	if (keystate[XK_Left])
+		camera->MoveX(1);
+	if (keystate[XK_Right])
+		camera->MoveX(-1);
+
+	if (keystate[XK_Down])
+		camera->MoveZ(-1);
+
+	if (keystate[XK_Up])
+		camera->MoveZ(1);
+	camera->RotateMouse(mousePos);
+}
 
 void Game::Tick(float deltaTime)
 {
-	static Timer timer;
-	if (keystate[XK_Escape])
-		exit(0);
-	if (keystate[XK_Left])
-		position.x += -1 * deltaTime;
-	if (keystate[XK_Right])
-		position.x += 1 * deltaTime;
-	if (keystate[XK_Down])
-		mixing += deltaTime;
-	if (keystate[XK_Up])
-		mixing -= deltaTime;
-
-
-	mat4 rotate = mat4::RotateZ(timer.elapsed());
-	mat4 scale = mat4::Scale(sinf(timer.elapsed()));
-	mat4 translate1 = mat4::Translate(0.5f, -0.5f, 0);
-	mat4 translate2 = mat4::Translate(-.5f, 0.5, 0);
-
-	mat4 transform = translate1 * rotate;
+	HandleInput(deltaTime);
 
 	simpleShader->Bind();
+
+
 	//simpleShader->SetFloat3("offset", position.x, position.y, position.z);
 	simpleShader->SetFloat("mixing", mixing);
-	simpleShader->SetMat4x4("transform", transform);
 
-	triangle.Draw();
-	transform = translate2 * scale;
 
-	simpleShader->SetMat4x4("transform", transform);
+	camera->Update(deltaTime);
 
-	triangle.Draw();
+	simpleShader->SetMat4x4("view", camera->LookAt());
+
+	//camera->SetViewMatrix(simpleShader);
+	for (unsigned int i = 0; i < 10; i++)
+	{
+		mat4 model = mat4::Translate(cubePositions[i]);
+		float angle = 20.0f * i;
+		float3 dir(1.0f, 0.3f, 0.5f);
+		dir = normalize(dir);
+		model = model * mat4::Rotate(dir.x, dir.y, dir.z, angle * PI / 180);
+		simpleShader->SetMat4x4("model", model);
+		triangle.Draw();
+	}
 
 	simpleShader->Unbind();
 }

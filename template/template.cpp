@@ -7,7 +7,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xlibint.h>
-
+#include <X11/cursorfont.h>
 #include "game.h"
 using namespace Tmpl8;
 
@@ -174,6 +174,10 @@ void* InputHandlerThread(void* x)
 	//		}
 	//	}
 	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask);
+	XGrabPointer(x11Display, x11Window, True, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
+	HideCursor(x11Display, x11Window);
+	LockCursor(x11Display, x11Window, CENTER_X, CENTER_Y);
+
 	XEvent event;
 	KeySym key;
 	char keybuf[64];
@@ -249,6 +253,19 @@ void GetMousePos(int& childx, int& childy)
 	uint mask;
 	Window w1, w2;
 	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
+}
+
+void HideCursor(Display* display, Window window)
+{
+	Cursor invisibleCursor = XCreateFontCursor(display, None);
+	XDefineCursor(display, window, invisibleCursor);
+	XFreeCursor(display, invisibleCursor);
+}
+
+void LockCursor(Display* display, Window window, int screen_width, int screen_height)
+{
+	XWarpPointer(display, None, window, 0, 0, 0, 0, screen_width / 2, screen_height / 2);
+	XFlush(display);
 }
 
 // EGL initialization; 
@@ -364,6 +381,9 @@ int main(int argc, char* argv[])
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
 	constexpr float FPS = 1.0f / 60;
+
+	
+
 	while (1)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

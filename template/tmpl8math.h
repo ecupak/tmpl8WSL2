@@ -2582,6 +2582,24 @@ public:
 		return m;
 	}
 
+	//from GLM perspective https://github.com/g-truc/glm/blob/0.9.5/glm/gtc/matrix_transform.inl#L207-L229
+	static mat4 Perspective(const float fovy, const float aspect, const float zNear, const float zFar)
+	{
+		/*assert(aspect != static_cast<T>(0));
+		assert(zFar != zNear);*/
+
+		const float rad = fovy;
+		const float tanHalfFovy = tan(rad / 2.0f);
+
+		mat4 Result;
+		Result[0] = 1.0f / (aspect * tanHalfFovy);
+		Result[5] = 1.0f / (tanHalfFovy);
+		Result[10] = -(zFar + zNear) / (zFar - zNear);
+		Result[14] = -1.0f;
+		Result[11] = -(2.0f * zFar * zNear) / (zFar - zNear);
+		return Result;
+	}
+
 	static mat4 LookAt(const float3 P, const float3 T)
 	{
 		const float3 z = normalize(T - P);
@@ -2594,37 +2612,54 @@ public:
 		return M;
 	}
 
-	static mat4 LookAt(const float3& pos, const float3& look, const float3& up)
-	{
-		// PBRT's lookat
-		mat4 cameraToWorld;
-		// initialize fourth column of viewing matrix
-		cameraToWorld(0, 3) = pos.x;
-		cameraToWorld(1, 3) = pos.y;
-		cameraToWorld(2, 3) = pos.z;
-		cameraToWorld(3, 3) = 1;
+	//static mat4 LookAt(const float3& pos, const float3& look, const float3& up)
+	//{
+	//	// PBRT's lookat
+	//	mat4 cameraToWorld;
+	//	// initialize fourth column of viewing matrix
+	//	cameraToWorld(0, 3) = pos.x;
+	//	cameraToWorld(1, 3) = pos.y;
+	//	cameraToWorld(2, 3) = pos.z;
+	//	cameraToWorld(3, 3) = 1;
 
-		// initialize first three columns of viewing matrix
-		float3 dir = normalize(look - pos);
-		float3 right = cross(normalize(up), dir);
-		if (dot(right, right) == 0)
-		{
-			printf(
-				"\"up\" vector (%f, %f, %f) and viewing direction (%f, %f, %f) "
-				"passed to LookAt are pointing in the same direction.  Using "
-				"the identity transformation.\n",
-				up.x, up.y, up.z, dir.x, dir.y, dir.z);
-			return mat4();
-		}
-		right = normalize(right);
-		float3 newUp = cross(dir, right);
-		cameraToWorld(0, 0) = right.x, cameraToWorld(1, 0) = right.y;
-		cameraToWorld(2, 0) = right.z, cameraToWorld(3, 0) = 0.;
-		cameraToWorld(0, 1) = newUp.x, cameraToWorld(1, 1) = newUp.y;
-		cameraToWorld(2, 1) = newUp.z, cameraToWorld(3, 1) = 0.;
-		cameraToWorld(0, 2) = dir.x, cameraToWorld(1, 2) = dir.y;
-		cameraToWorld(2, 2) = dir.z, cameraToWorld(3, 2) = 0.;
-		return cameraToWorld.Inverted();
+	//	// initialize first three columns of viewing matrix
+	//	float3 dir = normalize(look - pos);
+	//	float3 right = cross(normalize(up), dir);
+	//	if (dot(right, right) == 0)
+	//	{
+	//		printf(
+	//			"\"up\" vector (%f, %f, %f) and viewing direction (%f, %f, %f) "
+	//			"passed to LookAt are pointing in the same direction.  Using "
+	//			"the identity transformation.\n",
+	//			up.x, up.y, up.z, dir.x, dir.y, dir.z);
+	//		return mat4();
+	//	}
+	//	right = normalize(right);
+	//	float3 newUp = cross(dir, right);
+	//	cameraToWorld(0, 0) = right.x, cameraToWorld(1, 0) = right.y;
+	//	cameraToWorld(2, 0) = right.z, cameraToWorld(3, 0) = 0.;
+	//	cameraToWorld(0, 1) = newUp.x, cameraToWorld(1, 1) = newUp.y;
+	//	cameraToWorld(2, 1) = newUp.z, cameraToWorld(3, 1) = 0.;
+	//	cameraToWorld(0, 2) = dir.x, cameraToWorld(1, 2) = dir.y;
+	//	cameraToWorld(2, 2) = dir.z, cameraToWorld(3, 2) = 0.;
+	//	return cameraToWorld.Inverted();
+	//}
+
+	static mat4 LookAt(const float3& eye, const float3& at, const float3& up)
+	{
+		float3 zaxis = -normalize(at - eye);
+		float3 xaxis = normalize(cross(zaxis, up));
+		float3 yaxis = cross(xaxis, zaxis);
+
+
+		mat4 viewMatrix = {
+			xaxis.x, xaxis.y, xaxis.z, -dot(xaxis, eye),
+			yaxis.x, yaxis.y, yaxis.z, -dot(yaxis, eye),
+			zaxis.x, zaxis.y, zaxis.z, -dot(zaxis, eye),
+			0, 0, 0, 1
+		};
+
+		return viewMatrix;
 	}
 
 	static mat4 Translate(const float x, const float y, const float z)
@@ -2667,10 +2702,10 @@ public:
 		__m128& inM0 = (__m128&)cell[0], & outM0 = (__m128&)r.cell[0];
 		__m128& inM1 = (__m128&)cell[4], & outM1 = (__m128&)r.cell[4];
 		__m128& inM2 = (__m128&)cell[8], & outM2 = (__m128&)r.cell[8];
-		__m128 t0 = _mm_movelh_ps( inM0, inM1 ), t1 = _mm_movehl_ps( inM1, inM0 );
-		outM0 = _mm_shuffle_ps( t0, inM2, 0b11001000 );
-		outM1 = _mm_shuffle_ps( t0, inM2, 0b11011101 );
-		outM2 = _mm_shuffle_ps( t1, inM2, 0b11101000 );
+		__m128 t0 = _mm_movelh_ps(inM0, inM1), t1 = _mm_movehl_ps(inM1, inM0);
+		outM0 = _mm_shuffle_ps(t0, inM2, 0b11001000);
+		outM1 = _mm_shuffle_ps(t0, inM2, 0b11011101);
+		outM2 = _mm_shuffle_ps(t1, inM2, 0b11101000);
 #else
 		// fallback for crossplatform compatibility
 		r[0] = cell[0], r[1] = cell[4], r[2] = cell[8];

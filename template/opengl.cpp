@@ -242,6 +242,12 @@ void Shader::SetMat4x4(const char* name, const mat4 v) const
 	CheckGL();
 }
 
+void Shader::SetMat4x4Trasnpose(const char* name, const mat4 v) const
+{
+	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, v.cell);
+	CheckGL();
+}
+
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {
 	glUniform3f(glGetUniformLocation(ID, name), v1, v2, v3);

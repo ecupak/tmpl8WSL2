@@ -17,7 +17,9 @@ void Triangle::Draw()
 
 	glBindVertexArray(VAO);
 	//glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
 	/*glBindVertexArray(0);*/
 	face.Unbind();
 	wall.Unbind();
@@ -43,11 +45,11 @@ void Triangle::Init()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-	//Element buffer object
-	glGenBuffers(1, &EBO);
+	////Element buffer object
+	//glGenBuffers(1, &EBO);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	//saves to EBO or the current buffer binding
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
