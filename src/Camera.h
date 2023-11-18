@@ -18,8 +18,8 @@ public:
 
 private:
 	//void GetCameraAxis(const float3& cameraTarget);
-	float lastX = 400, lastY = 300;
-	float3 position = float3(0.0f, 0.0f, 3.0f);
+	float lastX = CENTER_X, lastY = CENTER_Y;
+	float3 position = float3(3.0f, 0.0f, 3.0f);
 	float3 cameraFront = float3(0.0f, 0.0f, -1.0f);
 	float3 dir;
 	float3 translation = 0;
@@ -28,4 +28,5 @@ private:
 
 	//euler angles
 	float yaw, pitch;
+	bool firstMouse = true;
 };

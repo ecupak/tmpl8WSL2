@@ -54,6 +54,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="template\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">

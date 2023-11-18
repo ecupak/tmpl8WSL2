@@ -11,9 +11,7 @@ void Game::Init()
 		"shaders/BasicFragmentShader.frag");
 
 	simpleShader->Bind();
-	mat4 projection = mat4::Perspective(PI / 180 * 45, static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                                    0.1f, 100.0f);
-	simpleShader->SetMat4x4("projection", projection);
+
 
 	simpleShader->SetInt("wallTexture", 0); // or with shader class
 	simpleShader->SetInt("faceTexture", 1); // or with shader class
@@ -46,6 +44,8 @@ float3 cubePositions[] = {
 	float3(-1.3f, 1.0f, -1.5f)
 };
 float3 position;
+float fov = 45;
+float yOffset = 0;
 
 void Game::HandleInput(float deltaTime)
 {
@@ -63,13 +63,27 @@ void Game::HandleInput(float deltaTime)
 
 	if (keystate[XK_Up])
 		camera->MoveZ(1);
+
+	if (keystate[XK_w])
+		yOffset++;
+
+	if (keystate[XK_s])
+		yOffset--;
+
+
 	camera->RotateMouse(mousePos);
 }
+
 
 void Game::Tick(float deltaTime)
 {
 	HandleInput(deltaTime);
-
+	fov -= yOffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
+	yOffset = 0;
 	simpleShader->Bind();
 
 
@@ -79,6 +93,9 @@ void Game::Tick(float deltaTime)
 
 	camera->Update(deltaTime);
 
+	mat4 projection = mat4::Perspective(fov * TO_RADIANS, static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                                    0.1f, 100.0f);
+	simpleShader->SetMat4x4("projection", projection);
 	simpleShader->SetMat4x4("view", camera->LookAt());
 
 	//camera->SetViewMatrix(simpleShader);

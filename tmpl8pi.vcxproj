@@ -244,6 +244,7 @@
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
+    <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="template\surface.h" />
     <ClCompile Include="template\template.h">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">-x %(AdditionalOptions)</AdditionalOptions>

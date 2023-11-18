@@ -27,6 +27,7 @@ void Camera::SetPosition(const float3& pos)
 
 void Camera::MoveZ(float multiplier)
 {
+	cameraFront.y = 0;
 	translation += camSpeed * cameraFront * multiplier;
 }
 
@@ -52,6 +53,12 @@ mat4 Camera::LookAt() const
 
 void Camera::RotateMouse(const int2& p)
 {
+	if (firstMouse)
+	{
+		lastX = static_cast<float>(p.x);
+		lastY = static_cast<float>(p.y);
+		firstMouse = false;
+	}
 	float xoffset = static_cast<float>(p.x) - lastX;
 	float yoffset = lastY - static_cast<float>(p.y); // reversed since y-coordinates range from bottom to top
 	lastX = static_cast<float>(p.x);

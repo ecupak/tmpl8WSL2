@@ -119,6 +119,25 @@ static EGLSurface eglSurface;
 static int* ks = 0;
 static int device = -1;
 
+void HideCursor(Display* display, Window window)
+{
+	Cursor invisibleCursor = XCreateFontCursor(display, None);
+	XDefineCursor(display, window, invisibleCursor);
+	XFreeCursor(display, invisibleCursor);
+}
+
+void LockCursor(Display* display, Window window, int screen_width, int screen_height)
+{
+	XWarpPointer(display, None, window, 0, 0, 0, 0, screen_width, screen_height);
+}
+
+void GetMousePos(int& childx, int& childy)
+{
+	int rootx, rooty;
+	uint mask;
+	Window w1, w2;
+	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
+}
 
 void* InputHandlerThread(void* x)
 {
@@ -173,11 +192,10 @@ void* InputHandlerThread(void* x)
 	//			}
 	//		}
 	//	}
-	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask);
-	XGrabPointer(x11Display, x11Window, True, ButtonPressMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
-	HideCursor(x11Display, x11Window);
-	LockCursor(x11Display, x11Window, CENTER_X, CENTER_Y);
-
+	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+	// Grab the pointer to hide and capture it
+	XGrabPointer(x11Display, x11Window, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync,
+	             GrabModeAsync, None, None, CurrentTime);
 	XEvent event;
 	KeySym key;
 	char keybuf[64];
@@ -195,6 +213,19 @@ void* InputHandlerThread(void* x)
 		else if (event.type == KeyRelease)
 		{
 			ks[key] = 0;
+		}
+		else if (event.type == MotionNotify)
+		{
+			// Handle mouse motion
+
+			printf("Mouse motion: (%d, %d)\n", game->mousePos.x, game->mousePos.y);
+			// Check if the cursor is near the window edges
+			if (event.xmotion.x < 10 || event.xmotion.x > SCRWIDTH - 10 ||
+				event.xmotion.y < 10 || event.xmotion.y > SCRHEIGHT - 10)
+			{
+				// Warp the pointer to the center of the window
+				XWarpPointer(x11Display, None, x11Window, 0, 0, 0, 0, CENTER_X, CENTER_Y);
+			}
 		}
 
 		//	//letters
@@ -247,26 +278,6 @@ void* InputHandlerThread(void* x)
 	}
 }
 
-void GetMousePos(int& childx, int& childy)
-{
-	int rootx, rooty;
-	uint mask;
-	Window w1, w2;
-	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
-}
-
-void HideCursor(Display* display, Window window)
-{
-	Cursor invisibleCursor = XCreateFontCursor(display, None);
-	XDefineCursor(display, window, invisibleCursor);
-	XFreeCursor(display, invisibleCursor);
-}
-
-void LockCursor(Display* display, Window window, int screen_width, int screen_height)
-{
-	XWarpPointer(display, None, window, 0, 0, 0, 0, screen_width / 2, screen_height / 2);
-	XFlush(display);
-}
 
 // EGL initialization; 
 // heavily based on code by Brian Beuken
@@ -354,6 +365,9 @@ void closeEGL()
 
 int main(int argc, char* argv[])
 {
+	//multi X init
+	XInitThreads();
+
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
 	//GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
@@ -381,14 +395,16 @@ int main(int argc, char* argv[])
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
 	constexpr float FPS = 1.0f / 60;
-
-	
-
+	LockCursor(x11Display, x11Window, CENTER_X, CENTER_Y);
 	while (1)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		HideCursor(x11Display, x11Window);
 		GetMousePos(game->mousePos.x, game->mousePos.y);
+
+
 		game->Tick(FPS);
+
 
 		/*renderTarget->CopyFrom(&screen);
 		shader->Bind();
