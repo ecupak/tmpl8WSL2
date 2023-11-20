@@ -64,7 +64,7 @@ void Camera::RotateMouse(const int2& p)
 	lastX = static_cast<float>(p.x);
 	lastY = static_cast<float>(p.y);
 
-	const float sensitivity = 0.1f;
+	const float sensitivity = 0.3f;
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
