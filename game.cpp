@@ -46,6 +46,7 @@ float3 cubePositions[] = {
 float3 position;
 float fov = 45;
 float yOffset = 0;
+int2 rotateCam = 0;
 
 void Game::HandleInput(float deltaTime)
 {
@@ -69,9 +70,19 @@ void Game::HandleInput(float deltaTime)
 
 	if (keystate[XK_s])
 		yOffset--;
+	if (keystate[XK_d])
+		rotateCam.x--;
+
+	if (keystate[XK_a])
+		rotateCam.x++;
+	if (keystate[XK_z])
+		rotateCam.y--;
+
+	if (keystate[XK_c])
+		rotateCam.y++;
 
 
-	camera->RotateMouse(mousePos);
+	camera->RotateMouse(rotateCam);
 }
 
 
@@ -105,7 +116,7 @@ void Game::Tick(float deltaTime)
 		float angle = 20.0f * i;
 		float3 dir(1.0f, 0.3f, 0.5f);
 		dir = normalize(dir);
-		model = model * mat4::Rotate(dir.x, dir.y, dir.z, angle * PI / 180);
+		model = model * mat4::Rotate(dir.x, dir.y, dir.z, angle * TO_RADIANS);
 		simpleShader->SetMat4x4("model", model);
 		triangle.Draw();
 	}
