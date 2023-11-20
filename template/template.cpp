@@ -7,7 +7,10 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xlibint.h>
+#include <X11/cursorfont.h>
+#include "game.h"
 using namespace Tmpl8;
+
 
 // Enable usage of dedicated GPUs in notebooks
 // Note: this does cause the linker to produce a .lib and .exp file;
@@ -24,6 +27,7 @@ extern "C"
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 } */
 #endif
+
 
 Game* game;
 
@@ -116,6 +120,14 @@ static int* ks = 0;
 static int device = -1;
 
 
+void GetMousePos(int& childx, int& childy)
+{
+	int rootx, rooty;
+	uint mask;
+	Window w1, w2;
+	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
+}
+
 void* InputHandlerThread(void* x)
 {
 	//get keyboard on linux
@@ -169,7 +181,10 @@ void* InputHandlerThread(void* x)
 	//			}
 	//		}
 	//	}
-	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask);
+	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+	// Grab the pointer to hide and capture it
+	/*XGrabPointer(x11Display, x11Window, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync,
+	             GrabModeAsync, None, None, CurrentTime);*/
 	XEvent event;
 	KeySym key;
 	char keybuf[64];
@@ -187,6 +202,12 @@ void* InputHandlerThread(void* x)
 		else if (event.type == KeyRelease)
 		{
 			ks[key] = 0;
+		}
+		else if (event.type == MotionNotify)
+		{
+			// Handle mouse motion
+
+			//printf("Mouse motion: (%d, %d)\n", game->mousePos.x, game->mousePos.y);
 		}
 
 		//	//letters
@@ -239,13 +260,6 @@ void* InputHandlerThread(void* x)
 	}
 }
 
-void GetMousePos(int& childx, int& childy)
-{
-	int rootx, rooty;
-	uint mask;
-	Window w1, w2;
-	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
-}
 
 // EGL initialization; 
 // heavily based on code by Brian Beuken
@@ -333,42 +347,53 @@ void closeEGL()
 
 int main(int argc, char* argv[])
 {
+	//multi X init
+	XInitThreads();
+
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
-	GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
-#if WINBUILD
-	Shader* shader = new Shader(
-		"#version 330\nin vec4 p;\nin vec2 t;out vec2 u;void main(){u=t;gl_Position=p;}",
-		"#version 330\nuniform sampler2D c;in vec2 u;out vec4 f;void main(){f=sqrt(texture(c,u));}", true);
-#else
-	Shader* shader = new Shader(
-		"precision mediump float;attribute vec3 p;varying vec2 u;void main(){u=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,1);}",
-		"precision mediump float;varying vec2 u;uniform sampler2D c;void main(){gl_FragColor=texture2D(c,u).zyxw;}",
-		true);
-#endif
+	//GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
+	//#if WINBUILD
+	//		Shader* shader = new Shader(
+	//			"#version 330\nin vec4 p;\nin vec2 t;out vec2 u;void main(){u=t;gl_Position=p;}",
+	//			"#version 330\nuniform sampler2D c;in vec2 u;out vec4 f;void main(){f=sqrt(texture(c,u));}", true);
+	//#else
+	//	Shader* shader = new Shader(
+	//		"precision mediump float;attribute vec3 p;varying vec2 u;void main(){u=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,1);}",
+	//		"precision mediump float;varying vec2 u;uniform sampler2D c;void main(){gl_FragColor=texture2D(c,u).zyxw;}",
+	//		true);
+	//#endif
+
 	FixWorkingFolder();
 	Surface screen(SCRWIDTH, SCRHEIGHT);
 	screen.Clear(0);
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	game = new Game();
-	game->SetTarget(&screen);
+	//game->SetTarget(&screen);
 	game->Init();
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	eglSwapInterval(eglDisplay, 0);
 	ks = game->keystate;
 	pthread_t dummy;
 	pthread_create(&dummy, 0, InputHandlerThread, 0);
+	constexpr float FPS = 1.0f / 60;
 	while (1)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		GetMousePos(game->mousePos.x, game->mousePos.y);
-		game->Tick(0 /* no timing yet */);
-		renderTarget->CopyFrom(&screen);
+
+
+		game->Tick(FPS);
+
+
+		/*renderTarget->CopyFrom(&screen);
 		shader->Bind();
-		shader->SetInputTexture(0, "c", renderTarget);
-		DrawQuad();
-		shader->Unbind();
-		glFlush();
+		shader->SetInputTexture(0, "c", renderTarget);*/
+		//DrawQuad();
+		/*shader->Unbind();*/
+
 		eglSwapBuffers(eglDisplay, eglSurface);
+		glFlush();
 	}
 }

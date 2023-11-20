@@ -223,6 +223,10 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="template\surface.cpp" />
@@ -235,8 +239,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
+    <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="template\surface.h" />
     <ClCompile Include="template\template.h">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">-x %(AdditionalOptions)</AdditionalOptions>
@@ -251,10 +260,14 @@
     <ClInclude Include="template\tmpl8math.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\awesomeface.png" />
     <Image Include="assets\font.png" />
     <Image Include="assets\spec.jpg" />
+    <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\BasicFragmentShader.frag" />
+    <None Include="shaders\BasicVertexShader.vert" />
     <None Include="shaders\compute.comp" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -269,8 +282,8 @@
       <LinkTimeOptimization>false</LinkTimeOptimization>
       <RelaxIEEE>false</RelaxIEEE>
       <ExceptionHandling>Enabled</ExceptionHandling>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link />
     <Link />
     <Link />
   </ItemDefinitionGroup>
@@ -293,6 +306,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
       <CLanguageStandard>c11</CLanguageStandard>
       <CppLanguageStandard>c++17</CppLanguageStandard>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -324,7 +338,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
@@ -335,6 +349,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
@@ -343,6 +358,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|x64'">

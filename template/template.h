@@ -5,12 +5,16 @@
 // default screen resolution
 #define SCRWIDTH	640
 #define SCRHEIGHT	480
+#define  CENTER_X  SCRWIDTH/ 2.0f
+#define  CENTER_Y  SCRHEIGHT/ 2.0f
+
 
 // allow NEON code
 #define USE_NEON_SIMD	1
 
 // constants
 #define PI			3.14159265358979323846264f
+#define TO_RADIANS			PI/180.0f
 #define INVPI		0.31830988618379067153777f
 #define INV2PI		0.15915494309189533576888f
 #define TWOPI		6.28318530717958647692528f
@@ -56,7 +60,8 @@ using LONG = long;
 #include <pthread.h>
 #include <X11/Xutil.h>
 
-
+////define only if we run on the ARM platform
+//#ifdef __arm__
 //#ifdef USE_NEON_SIMD
 //
 //#include <arm_neon.h>
@@ -82,6 +87,7 @@ using LONG = long;
 //	return vmulq_f32(vrecpsq_f32(v4, reci4), reci4); // Newton-Raphson #2
 //}
 //
+//#endif
 //#endif
 
 using namespace std;
@@ -136,29 +142,5 @@ void DrawQuad();
 void FixWorkingFolder();
 string TextFileRead(const char* _File);
 
-// timer
-struct Timer
-{
-	Timer()
-	{
-		reset();
-	}
-
-	float elapsed() const
-	{
-		chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
-		chrono::duration<double> time_span = chrono::duration_cast<chrono::duration<double>>(t2 - start);
-		return (float)time_span.count();
-	}
-
-	void reset()
-	{
-		start = chrono::high_resolution_clock::now();
-	}
-
-	chrono::high_resolution_clock::time_point start;
-};
-
-#include "game.h"
 
 // EOF
