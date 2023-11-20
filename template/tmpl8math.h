@@ -2644,7 +2644,7 @@ public:
 	//	cameraToWorld(2, 2) = dir.z, cameraToWorld(3, 2) = 0.;
 	//	return cameraToWorld.Inverted();
 	//}
-
+	//source https://www.geertarien.com/blog/2017/07/30/breakdown-of-the-lookAt-function-in-OpenGL/
 	static mat4 LookAt(const float3& eye, const float3& at, const float3& up)
 	{
 		float3 zaxis = -normalize(at - eye);
