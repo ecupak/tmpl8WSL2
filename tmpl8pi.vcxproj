@@ -63,7 +63,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>WSL2_1_0</PlatformToolset>
+    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -322,7 +322,7 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
