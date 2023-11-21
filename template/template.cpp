@@ -623,14 +623,6 @@ static Timer timer;
 int main(int argc, char* argv[])
 {
 	//debug code
-
-
-	//multi X init
-	//XInitThreads();
-
-	setenv("DISPLAY", ":0", 1);
-	InitEGL();
-
 	const auto pegl_debug_message_control_khr = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress(
 		"glDebugMessageCallback"));
 	if (pegl_debug_message_control_khr == nullptr)
@@ -657,6 +649,12 @@ int main(int argc, char* argv[])
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
 	}
 
+	//multi X init
+	//XInitThreads();
+
+	setenv("DISPLAY", ":0", 1);
+	InitEGL();
+
 
 	//GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
 	//#if WINBUILD
@@ -671,9 +669,8 @@ int main(int argc, char* argv[])
 	//#endif
 
 	FixWorkingFolder();
-	Surface screen(SCRWIDTH, SCRHEIGHT);
-	screen.Clear(0);
-	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
+	//Surface screen(SCRWIDTH, SCRHEIGHT);
+	//screen.Clear(0);
 	game = new Game();
 	//game->SetTarget(&screen);
 	game->Init();
@@ -688,7 +685,6 @@ int main(int argc, char* argv[])
 
 	// Set ImGui context as current
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
-	ImGui_ImplOpenGL3_Init("#version 300 es");
 	ImGui_ImplOpenGL3_Init("#version 300 es");
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -705,8 +701,8 @@ int main(int argc, char* argv[])
 
 		// start new ImGui frame for use inside game.tick()
 		//imgui still throws erros when used with the current opengl setup
-		/*ImGui_ImplOpenGL3_NewFrame();
-		ImGui::NewFrame();*/
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui::NewFrame();
 		io.DeltaTime = deltaTime / 1000.0f;
 
 		game->Tick(deltaTime / 1000.0f);
@@ -719,8 +715,8 @@ int main(int argc, char* argv[])
 		/*shader->Unbind();*/
 
 
-		/*ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		eglSwapBuffers(eglDisplay, eglSurface);
 		glFlush();

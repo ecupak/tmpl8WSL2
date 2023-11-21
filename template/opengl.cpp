@@ -206,13 +206,13 @@ void Shader::Compile(const char* vtext, const char* ftext)
 void Shader::Bind()
 {
 	glUseProgram(ID);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::Unbind()
 {
 	glUseProgram(0);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
@@ -220,26 +220,26 @@ void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, texture->ID);
 	glUniform1i(glGetUniformLocation(ID, name), slot);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetInputMatrix(const char* name, const mat4& matrix)
 {
 	const GLfloat* data = (const GLfloat*)&matrix;
 	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, data);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetFloat(const char* name, const float v)
 {
 	glUniform1f(glGetUniformLocation(ID, name), v);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetMat4x4(const char* name, const mat4 v) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1,GL_TRUE, v.cell);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetMat4x4Trasnpose(const char* name, const mat4 v) const

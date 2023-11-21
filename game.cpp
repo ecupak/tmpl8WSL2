@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Camera.h"
+#include "imgui.h"
 
 // -----------------------------------------------------------
 // Initialize the application
