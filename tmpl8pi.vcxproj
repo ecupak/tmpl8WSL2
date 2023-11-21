@@ -188,6 +188,7 @@
       <ExceptionHandling>Disabled</ExceptionHandling>
       <Optimization>Full</Optimization>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">
@@ -218,6 +219,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="external\imgui.cpp" />
+    <ClCompile Include="external\imgui_demo.cpp" />
+    <ClCompile Include="external\imgui_draw.cpp" />
+    <ClCompile Include="external\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="external\imgui_tables.cpp" />
+    <ClCompile Include="external\imgui_widgets.cpp" />
     <ClCompile Include="game.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
@@ -238,6 +245,13 @@
     <ClCompile Include="template\tmpl8math.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="external\imconfig.h" />
+    <ClInclude Include="external\imgui.h" />
+    <ClInclude Include="external\imgui_impl_opengl3.h" />
+    <ClInclude Include="external\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="external\imstb_rectpack.h" />
+    <ClInclude Include="external\imstb_textedit.h" />
+    <ClInclude Include="external\imstb_truetype.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Texture.h" />
@@ -282,7 +296,7 @@
       <LinkTimeOptimization>false</LinkTimeOptimization>
       <RelaxIEEE>false</RelaxIEEE>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link />
     <Link />
@@ -306,7 +320,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
       <CLanguageStandard>c11</CLanguageStandard>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -324,7 +338,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>shaders/;src/;$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -339,7 +353,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
@@ -350,7 +364,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>shaders/;src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>shaders/;src/;external/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>

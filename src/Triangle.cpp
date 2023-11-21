@@ -20,7 +20,7 @@ void Triangle::Draw()
 	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	/*glBindVertexArray(0);*/
+	glBindVertexArray(0);
 	face.Unbind();
 	wall.Unbind();
 }

@@ -11,7 +11,6 @@ namespace Tmpl8
 	public:
 		// game flow methods
 		void Init();
-		void HandleInput(float deltaTime);
 		void Tick(float deltaTime);
 
 		void Shutdown()
@@ -19,10 +18,12 @@ namespace Tmpl8
 			/* implement if you want to do something on exit */
 		}
 
-		/*void SetTarget(Surface* s)
-		{
-			screen = s;
-		}*/
+		void KeyDown(XID key);
+		void KeyUp(XID key);
+		void MouseScroll(float x);
+		void MouseDown(unsigned button);
+		void MouseUp(unsigned button);
+		void MouseMove(int x, int y);
 
 		// data members
 		//Surface* screen;
@@ -37,6 +38,5 @@ namespace Tmpl8
 		Shader* simpleShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
-		inline static Timer timer;
 	};
 } // namespace Tmpl8
