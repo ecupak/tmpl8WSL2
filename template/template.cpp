@@ -14,6 +14,8 @@
 #include "imgui_impl_opengl3.h"
 
 #include <gl2ext.h>
+
+#include "Timer.h"
 using namespace Tmpl8;
 
 

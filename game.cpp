@@ -4,7 +4,8 @@
 
 #include "Camera.h"
 #include "imgui.h"
-
+#include <glm/glm.hpp>
+using namespace glm;
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
@@ -34,24 +35,24 @@ void Game::Init()
 
 
 float mixing = .2f;
-float3 cubePositions[] = {
-	float3(0.0f, 0.0f, 0.0f),
-	float3(2.0f, 5.0f, -15.0f),
-	float3(-1.5f, -2.2f, -2.5f),
-	float3(-3.8f, -2.0f, -12.3f),
-	float3(2.4f, -0.4f, -3.5f),
-	float3(-1.7f, 3.0f, -7.5f),
-	float3(1.3f, -2.0f, -2.5f),
-	float3(1.5f, 2.0f, -2.5f),
-	float3(1.5f, 0.2f, -1.5f),
-	float3(-1.3f, 1.0f, -1.5f)
+vec3 cubePositions[] = {
+	vec3(0.0f, 0.0f, 0.0f),
+	vec3(2.0f, 5.0f, -15.0f),
+	vec3(-1.5f, -2.2f, -2.5f),
+	vec3(-3.8f, -2.0f, -12.3f),
+	vec3(2.4f, -0.4f, -3.5f),
+	vec3(-1.7f, 3.0f, -7.5f),
+	vec3(1.3f, -2.0f, -2.5f),
+	vec3(1.5f, 2.0f, -2.5f),
+	vec3(1.5f, 0.2f, -1.5f),
+	vec3(-1.3f, 1.0f, -1.5f)
 };
-float3 position;
+vec3 position;
 float fov = 45;
 float yOffset = 0;
 
-int2 rotateCam = 0;
-float2 moveCam = 0;
+vec2 rotateCam;
+vec2 moveCam;
 
 
 void Game::Tick(float deltaTime)
@@ -75,19 +76,21 @@ void Game::Tick(float deltaTime)
 
 	camera->Update(deltaTime);
 
-	mat4 projection = mat4::Perspective(fov * TO_RADIANS, static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                                    0.1f, 100.0f);
+	mat4 projection = glm::perspective(glm::radians(fov),
+	                                   static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                                   0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", projection);
-	simpleShader->SetMat4x4("view", camera->LookAt());
+	glm::mat4 view = camera->LookAt();
+	simpleShader->SetMat4x4("view", view);
 
 	//camera->SetViewMatrix(simpleShader);
 	for (unsigned int i = 0; i < 10; i++)
 	{
-		mat4 model = mat4::Translate(cubePositions[i]);
+		mat4 model = mat4(1.0f);
+		model = translate(model, cubePositions[i]);
 		float angle = 20.0f * i;
-		float3 dir(1.0f, 0.3f, 0.5f);
-		dir = normalize(dir);
-		model = model * mat4::Rotate(dir.x, dir.y, dir.z, angle * TO_RADIANS);
+		vec3 dir(1.0f, 0.3f, 0.5f);
+		model = glm::rotate(model, radians(angle), dir);
 		simpleShader->SetMat4x4("model", model);
 		triangle.Draw();
 	}
@@ -188,8 +191,8 @@ void Game::KeyUp(XID key)
 	default:
 		break;
 	}
-	rotateCam.x = clamp(rotateCam.x, -1, 1);
-	rotateCam.y = clamp(rotateCam.y, -1, 1);
+	rotateCam.x = clamp(rotateCam.x, -1.0f, 1.0f);
+	rotateCam.y = clamp(rotateCam.y, -1.0f, 1.0f);
 	moveCam.x = clamp(moveCam.x, -1.0f, 1.0f);
 	moveCam.y = clamp(moveCam.y, -1.0f, 1.0f);
 }

@@ -3,6 +3,7 @@
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
 
 #pragma once
+#include <glm/mat4x4.hpp>
 
 // OpenGL texture wrapper
 class GLTexture
@@ -40,10 +41,9 @@ public:
 	void Compile(const char* vtext, const char* ftext);
 	void Bind();
 	void SetInputTexture(uint slot, const char* name, GLTexture* texture);
-	void SetInputMatrix(const char* name, const mat4& matrix);
+	void SetInputMatrix(const char* name, const glm::mat4& matrix);
 	void SetFloat(const char* name, const float v);
-	void SetMat4x4(const char* name, mat4 v) const;
-	void SetMat4x4Trasnpose(const char* name, mat4 v) const;
+	void SetMat4x4(const char* name, const glm::mat4& v) const;
 	void SetFloat3(const char* name, float v1, float v2, float v3);
 	void SetInt(const char* name, const int v);
 	void SetUInt(const char* name, const uint v);
