@@ -48,12 +48,16 @@ float3 cubePositions[] = {
 float3 position;
 float fov = 45;
 float yOffset = 0;
+
 int2 rotateCam = 0;
+float2 moveCam = 0;
 
 
 void Game::Tick(float deltaTime)
 {
 	camera->RotateMouse(rotateCam);
+	camera->MoveX(moveCam.x);
+	camera->MoveZ(moveCam.y);
 	fov -= yOffset;
 	if (fov < 1.0f)
 		fov = 1.0f;
@@ -94,40 +98,43 @@ void Game::KeyDown(XID key)
 {
 	switch (key)
 	{
+	case XK_w:
+		yOffset -= 1;
+		break;
+	case XK_s:
+		yOffset += 1;
+		break;
+	case XK_d:
+		rotateCam.x += -1;
+		break;
+	case XK_a:
+		rotateCam.x -= -1;
+		break;
+	case XK_z:
+		rotateCam.y += 1;
+		break;
+	case XK_c:
+		rotateCam.y -= 1;
+		break;
 	case XK_Left:
-		camera->MoveX(1);
-		cout << "left'\n" << endl;
+		moveCam.x = 1;
+
 
 		break;
 	case XK_Right:
-		camera->MoveX(-1);
-		cout << "right" << endl;
+		moveCam.x = -1;
+
+
 		break;
 	case XK_Down:
-		camera->MoveZ(-1);
+		moveCam.y = -1;
+
 
 		break;
 	case XK_Up:
-		camera->MoveZ(1);
-		break;
-	case XK_w:
-		yOffset++;
+		moveCam.y = 1;
 
-		break;
-	case XK_s:
-		yOffset--;
-		break;
-	case XK_d:
-		rotateCam.x--;
-		break;
-	case XK_a:
-		rotateCam.x++;
-		break;
-	case XK_z:
-		rotateCam.y--;
-		break;
-	case XK_c:
-		rotateCam.y++;
+
 		break;
 	default:
 		break;
@@ -138,9 +145,52 @@ void Game::KeyUp(XID key)
 {
 	switch (key)
 	{
+	case XK_w:
+		yOffset -= 1;
+
+		break;
+	case XK_s:
+		yOffset += 1;
+		break;
+	case XK_d:
+		rotateCam.x += 1;
+		break;
+	case XK_a:
+		rotateCam.x -= 1;
+		break;
+	case XK_z:
+		rotateCam.y += -1;
+		break;
+	case XK_c:
+		rotateCam.y -= -1;
+		break;
+	case XK_Left:
+		moveCam.x -= 1;
+
+
+		break;
+	case XK_Right:
+		moveCam.x -= -1;
+
+
+		break;
+	case XK_Down:
+		moveCam.y -= -1;
+
+
+		break;
+	case XK_Up:
+		moveCam.y -= 1;
+
+
+		break;
 	default:
 		break;
 	}
+	rotateCam.x = clamp(rotateCam.x, -1, 1);
+	rotateCam.y = clamp(rotateCam.y, -1, 1);
+	moveCam.x = clamp(moveCam.x, -1.0f, 1.0f);
+	moveCam.y = clamp(moveCam.y, -1.0f, 1.0f);
 }
 
 void Game::MouseScroll(float x)

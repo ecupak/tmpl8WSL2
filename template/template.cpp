@@ -704,8 +704,9 @@ int main(int argc, char* argv[])
 		timer.reset();
 
 		// start new ImGui frame for use inside game.tick()
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui::NewFrame();
+		//imgui still throws erros when used with the current opengl setup
+		/*ImGui_ImplOpenGL3_NewFrame();
+		ImGui::NewFrame();*/
 		io.DeltaTime = deltaTime / 1000.0f;
 
 		game->Tick(deltaTime / 1000.0f);
@@ -718,8 +719,8 @@ int main(int argc, char* argv[])
 		/*shader->Unbind();*/
 
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		/*ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 
 		eglSwapBuffers(eglDisplay, eglSurface);
 		glFlush();

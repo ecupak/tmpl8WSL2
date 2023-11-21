@@ -53,10 +53,9 @@ mat4 Camera::LookAt() const
 
 void Camera::RotateMouse(const int2& p)
 {
-	float xoffset = static_cast<float>(p.x) - lastX;
-	float yoffset = lastY - static_cast<float>(p.y); // reversed since y-coordinates range from bottom to top
-	lastX = static_cast<float>(p.x);
-	lastY = static_cast<float>(p.y);
+	float xoffset = static_cast<float>(p.x);
+	float yoffset = -static_cast<float>(p.y); // reversed since y-coordinates range from bottom to top
+
 
 	const float sensitivity = 0.3f;
 	xoffset *= sensitivity;

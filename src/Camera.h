@@ -18,7 +18,7 @@ public:
 
 private:
 	//void GetCameraAxis(const float3& cameraTarget);
-	float lastX = 0, lastY = 0;
+	//	float lastX = 0, lastY = 0;
 	float3 position = float3(0.0f, 0.0f, 3.0f);
 	float3 cameraFront = float3(0.0f, 0.0f, -1.0f);
 	float3 dir = 0;
