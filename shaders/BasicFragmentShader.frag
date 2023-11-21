@@ -1,4 +1,4 @@
-#version 300 es
+#version 310 es
 out highp vec4 FragColor;
 
 in highp vec2 TexCoord;
