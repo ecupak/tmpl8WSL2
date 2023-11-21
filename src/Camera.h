@@ -24,7 +24,7 @@ private:
 	float3 dir = 0;
 	float3 translation = 0;
 	float3 cameraUp = float3(0.0f, 1.0f, 0.0f);
-	const float camSpeed = 0.2f;
+	const float camSpeed = 20.0f;
 
 	//euler angles
 	float yaw = -90.0f;
