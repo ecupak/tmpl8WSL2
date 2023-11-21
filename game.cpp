@@ -57,26 +57,22 @@ vec2 moveCam;
 
 void Game::Tick(float deltaTime)
 {
-	camera->RotateMouse(rotateCam);
-	camera->MoveX(moveCam.x);
-	camera->MoveZ(moveCam.y);
-	fov -= yOffset;
-	if (fov < 1.0f)
-		fov = 1.0f;
-	if (fov > 45.0f)
-		fov = 45.0f;
-	yOffset = 0;
+	km_.Update();
+
+	//fov -= yOffset;
+	//if (fov < 1.0f)
+	//	fov = 1.0f;
+	//if (fov > 45.0f)
+	//	fov = 45.0f;
+	//yOffset = 0;
 
 	simpleShader->Bind();
-
-
 	//simpleShader->SetFloat3("offset", position.x, position.y, position.z);
 	simpleShader->SetFloat("mixing", mixing);
 
+	camera->Update(deltaTime, km_);
 
-	camera->Update(deltaTime);
-
-	mat4 projection = glm::perspective(glm::radians(fov),
+	mat4 projection = glm::perspective(glm::radians(camera->GetFOV()),
 	                                   static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                                   0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", projection);
@@ -98,104 +94,18 @@ void Game::Tick(float deltaTime)
 	simpleShader->Unbind();
 }
 
-void Game::KeyDown(XID key)
+
+void Game::KeyDown(const KeySym keycode)
 {
-	switch (key)
-	{
-	case XK_w:
-		yOffset -= 1;
-		break;
-	case XK_s:
-		yOffset += 1;
-		break;
-	case XK_d:
-		rotateCam.x += -1;
-		break;
-	case XK_a:
-		rotateCam.x -= -1;
-		break;
-	case XK_z:
-		rotateCam.y += 1;
-		break;
-	case XK_c:
-		rotateCam.y -= 1;
-		break;
-	case XK_Left:
-		moveCam.x = 1;
-
-
-		break;
-	case XK_Right:
-		moveCam.x = -1;
-
-
-		break;
-	case XK_Down:
-		moveCam.y = -1;
-
-
-		break;
-	case XK_Up:
-		moveCam.y = 1;
-
-
-		break;
-	default:
-		break;
-	}
+	km_.KeyPressed(keycode);
 }
 
-void Game::KeyUp(XID key)
+
+void Game::KeyUp(const KeySym keycode)
 {
-	switch (key)
-	{
-	case XK_w:
-		yOffset -= 1;
-
-		break;
-	case XK_s:
-		yOffset += 1;
-		break;
-	case XK_d:
-		rotateCam.x += 1;
-		break;
-	case XK_a:
-		rotateCam.x -= 1;
-		break;
-	case XK_z:
-		rotateCam.y += -1;
-		break;
-	case XK_c:
-		rotateCam.y -= -1;
-		break;
-	case XK_Left:
-		moveCam.x -= 1;
-
-
-		break;
-	case XK_Right:
-		moveCam.x -= -1;
-
-
-		break;
-	case XK_Down:
-		moveCam.y -= -1;
-
-
-		break;
-	case XK_Up:
-		moveCam.y -= 1;
-
-
-		break;
-	default:
-		break;
-	}
-	rotateCam.x = clamp(rotateCam.x, -1.0f, 1.0f);
-	rotateCam.y = clamp(rotateCam.y, -1.0f, 1.0f);
-	moveCam.x = clamp(moveCam.x, -1.0f, 1.0f);
-	moveCam.y = clamp(moveCam.y, -1.0f, 1.0f);
+	km_.KeyReleased(keycode);
 }
+
 
 void Game::MouseScroll(float x)
 {

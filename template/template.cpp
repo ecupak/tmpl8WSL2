@@ -125,8 +125,10 @@ static EGLSurface eglSurface;
 //static int device = -1;
 
 Game* game;
+
 //declared as global
 static bool should_close;
+
 // window attributes
 XWindowAttributes attributes_{};
 static Atom deleteWindow = 0;
@@ -400,7 +402,8 @@ void ProccessEvents(Game* game)
 		case KeyPress:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
-		// stop program if escape is pressed
+			
+			// stop program if escape is pressed
 			if (key_sym == XK_Escape)
 			{
 				should_close = true;
@@ -494,7 +497,7 @@ void ProccessEvents(Game* game)
 			x = event.xmotion.x;
 			y = event.xmotion.y;
 
-			ImGui::GetIO().MousePos = {static_cast<float>(x), static_cast<float>(y)};
+			ImGui::GetIO().MousePos = { static_cast<float>(x), static_cast<float>(y) };
 
 			game->MouseMove(
 				static_cast<int>(static_cast<float>(x) / static_cast<float>(attributes_.width) * static_cast<float>(

@@ -240,6 +240,7 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -544,6 +545,7 @@
     <ClInclude Include="external\Imgui\imconfig.h" />
     <ClInclude Include="external\Imgui\imgui.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Timer.h" />
