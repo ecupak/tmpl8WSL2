@@ -2,8 +2,10 @@
 // Get the latest version from: https://github.com/jbikker/tmpl8pi
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
 
+
 #include "template.h"
 
+#include <glm/gtc/type_ptr.hpp>
 static bool IGP_detected = false;
 
 // OpenGL helper functions
@@ -206,13 +208,13 @@ void Shader::Compile(const char* vtext, const char* ftext)
 void Shader::Bind()
 {
 	glUseProgram(ID);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::Unbind()
 {
 	glUseProgram(0);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
@@ -220,33 +222,27 @@ void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, texture->ID);
 	glUniform1i(glGetUniformLocation(ID, name), slot);
-	CheckGL();
+	//CheckGL();
 }
 
-void Shader::SetInputMatrix(const char* name, const mat4& matrix)
+void Shader::SetInputMatrix(const char* name, const glm::mat4& matrix)
 {
-	const GLfloat* data = (const GLfloat*)&matrix;
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, data);
-	CheckGL();
+	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
+	//CheckGL();
 }
 
 void Shader::SetFloat(const char* name, const float v)
 {
 	glUniform1f(glGetUniformLocation(ID, name), v);
-	CheckGL();
+	//CheckGL();
 }
 
-void Shader::SetMat4x4(const char* name, const mat4 v) const
+void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1,GL_TRUE, v.cell);
-	CheckGL();
+	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(v));
+	//CheckGL();
 }
 
-void Shader::SetMat4x4Trasnpose(const char* name, const mat4 v) const
-{
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, v.cell);
-	CheckGL();
-}
 
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {

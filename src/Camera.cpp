@@ -1,5 +1,7 @@
 ﻿#include "Camera.h"
 
+#include "template.h"
+
 
 //void Camera::GetCameraAxis(const float3& cameraTarget)
 //{
@@ -16,14 +18,20 @@ Camera::~Camera()
 {
 }
 
+glm::mat4 Camera::LookAt() const
+{
+	return glm::lookAt(position, position + cameraFront, cameraUp);
+}
+
 void Camera::Init()
 {
 }
 
-void Camera::SetPosition(const float3& pos)
+void Camera::SetPosition(const glm::vec3& pos)
 {
 	position = pos;
 }
+
 
 void Camera::MoveZ(float multiplier)
 {
@@ -43,20 +51,15 @@ void Camera::Update(float deltaTime)
 	dir.z = sin(TO_RADIANS * (yaw)) * cos(TO_RADIANS * (pitch));
 	cameraFront = normalize(dir);
 	position = position + translation * deltaTime;
-	translation = 0;
+	translation = glm::vec3(0);
 }
 
-mat4 Camera::LookAt() const
-{
-	return mat4::LookAt(position, position + cameraFront, cameraUp);
-}
 
-void Camera::RotateMouse(const int2& p)
+void Camera::RotateMouse(const glm::vec2& p)
 {
-	float xoffset = static_cast<float>(p.x) - lastX;
-	float yoffset = lastY - static_cast<float>(p.y); // reversed since y-coordinates range from bottom to top
-	lastX = static_cast<float>(p.x);
-	lastY = static_cast<float>(p.y);
+	float xoffset = p.x;
+	float yoffset = -p.y; // reversed since y-coordinates range from bottom to top
+
 
 	const float sensitivity = 0.3f;
 	xoffset *= sensitivity;

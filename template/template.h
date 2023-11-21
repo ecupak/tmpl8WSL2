@@ -116,8 +116,8 @@ using namespace Tmpl8;
 #define CHECK_RESULT
 #endif
 
-// include math classes
-#include "tmpl8math.h"
+//// include math classes
+//#include "tmpl8math.h"
 
 // fatal error reporting (with a pretty window)
 void FatalError(const char* fmt, ...);
