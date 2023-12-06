@@ -39,6 +39,7 @@
     <ClCompile Include="external\Imgui\imgui_tables.cpp" />
     <ClCompile Include="external\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="external\glm\detail\glm.cpp" />
+    <ClCompile Include="KeyboardManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="external\glm\simd\platform.h" />
     <ClInclude Include="external\glm\simd\trigonometric.h" />
     <ClInclude Include="external\glm\simd\vector_relational.h" />
+    <ClInclude Include="KeyboardManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">

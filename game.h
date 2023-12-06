@@ -1,6 +1,9 @@
 #pragma once
 #include "Triangle.h"
 
+#include "KeyboardManager.h"
+
+
 class Camera;
 
 namespace Tmpl8
@@ -12,13 +15,11 @@ namespace Tmpl8
 		void Init();
 		void Tick(float deltaTime);
 
-		void Shutdown()
-		{
-			/* implement if you want to do something on exit */
-		}
+		void Shutdown() {}
 
-		void KeyDown(XID key);
-		void KeyUp(XID key);
+		void KeyDown(const KeySym keycode);
+		void KeyUp(const KeySym keycode);
+
 		void MouseScroll(float x);
 		void MouseDown(unsigned button);
 		void MouseUp(unsigned button);
@@ -37,5 +38,7 @@ namespace Tmpl8
 		Shader* simpleShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
+
+		KeyboardManager km_;
 	};
-} // namespace Tmpl8
+}
